@@ -14,6 +14,8 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.mooy1.infinitylib.machines.AbstractMachineBlock;
 import com.github.drakescraft_labs.slimefun4.api.items.ItemGroup;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemSetting;
+import com.github.drakescraft_labs.slimefun4.api.items.settings.IntRangeSetting;
 import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
 import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
 import com.github.drakescraft_labs.slimefun4.core.attributes.RecipeDisplayItem;
@@ -31,13 +33,31 @@ public final class VoidObsidianGenerator extends AbstractMachineBlock implements
     private static final int[] OUTPUT_SLOTS = { 13 };
     private static final int STATUS_SLOT = 4;
 
-    @Setter
-    private int speed = 64;
+    /**
+     * Obsidianas por ciclo. El ciclo corre una vez por tick de Slimefun, que en DrakesCraft es
+     * un segundo (URID.custom-ticker-delay = 20), asi que este numero es directamente
+     * obsidianas por segundo.
+     *
+     * Venia en 64: 230.400 a la hora, sin tope de entrada. Con un almacenamiento cuantico
+     * infinito detras eso no es una maquina, es una imprenta de dinero -- un jugador junto
+     * 85.000 en unos veinte minutos. Se baja a 16, que sigue siendo cuatro veces el generador
+     * avanzado y justifica su coste, sin romper la economia.
+     *
+     * Va como ItemSetting a proposito: aparece en Items.yml y se afina sin recompilar.
+     */
+    private final ItemSetting<Integer> speedSetting =
+            new IntRangeSetting(this, "obsidiana-por-ciclo", 1, 16, 64);
+
     @Setter
     public Material material = Material.OBSIDIAN;
 
     public VoidObsidianGenerator(ItemGroup category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
         super(category, item, type, recipe);
+        addItemSetting(speedSetting);
+    }
+
+    private int getSpeed() {
+        return speedSetting.getValue();
     }
 
     @Override
@@ -73,7 +93,7 @@ public final class VoidObsidianGenerator extends AbstractMachineBlock implements
     public List<ItemStack> getDisplayRecipes() {
         List<ItemStack> items = new ArrayList<>();
         items.add(null);
-        items.add(new ItemStack(this.material, this.speed));
+        items.add(new ItemStack(this.material, getSpeed()));
         return items;
     }
 
@@ -85,7 +105,7 @@ public final class VoidObsidianGenerator extends AbstractMachineBlock implements
 
     @Override
     protected boolean process(@Nonnull Block b, @Nonnull BlockMenu inv) {
-        ItemStack output = new ItemStack(this.material, this.speed);
+        ItemStack output = new ItemStack(this.material, getSpeed());
 
         if (!inv.fits(output, OUTPUT_SLOTS)) {
 
