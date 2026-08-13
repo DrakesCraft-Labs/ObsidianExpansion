@@ -22,7 +22,7 @@ public final class ObsidianExpansion extends AbstractAddon implements SlimefunAd
             )
             .build();
     public ObsidianExpansion() {
-        super("lucasGithuber", "ObsidianExpansion", "master", "options.auto-update");
+        super("DrakesCraft-Labs", "ObsidianExpansion", "main", "options.auto-update");
     }
 
     @Override
