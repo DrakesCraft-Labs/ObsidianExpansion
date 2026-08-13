@@ -30,7 +30,7 @@ public final class ObsidianExpansion extends AbstractAddon implements SlimefunAd
             instance = this;
             //armor
 
-                new CustomArmorTask().runTaskTimer(this, 0L, 0L);
+                new CustomArmorTask().runTaskTimer(this, 0L, 2L);
 
 
             // Setup item
