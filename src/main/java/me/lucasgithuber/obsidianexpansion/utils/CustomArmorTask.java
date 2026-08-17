@@ -1,7 +1,7 @@
 package me.lucasgithuber.obsidianexpansion.utils;
 
 import io.github.mooy1.infinitylib.common.Scheduler;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
 import me.lucasgithuber.obsidianexpansion.ObsidianExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
